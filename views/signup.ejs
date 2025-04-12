@@ -42,6 +42,9 @@
 
             
         </main>
+        <% if (locals.error && error.length > 0) { %>
+            <div style="color: red;"><%= error %></div>
+        <% } %>
 </body>
 
 </html>

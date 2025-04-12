@@ -50,7 +50,7 @@
 </head>
 <body>
     <div class="container">
-        <form action="/login?_method=POST" method="POST" class="m-8 p-8 form" autocomplete="off">
+        <form action="/" method="POST" class="m-8 p-8 form" autocomplete="off">
             <h1 class="text-center mb-4">Sign in</h1>
 
             <div class="mb-4">
@@ -73,5 +73,9 @@
             </div>
         </form>
     </div>
+    <% if (locals.success && success.length > 0) { %>
+        <div style="color: green;"><%= success %></div>
+    <% } %>
+    
 </body>
 </html>
