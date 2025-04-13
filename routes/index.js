@@ -9,12 +9,7 @@ router.get("/signup", AuthController.getSignUp);
 router.post("/signup", AuthController.postSignUp);
 
 router.get("/menu", (req, res) => {
-    const user = mockUsers.find(u => u.id === req.session.user_id);
-    const username = user ? user.username : "Guest";
-    res.render("menu", {
-        username,
-        success: req.flash("success"),
-    });
+   res.render("menu")
 });
 
 // // GET home page (login form)
