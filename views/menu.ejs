@@ -73,9 +73,10 @@
             Create Quiz
         </button>
 
-        <button class="btn btn-logout" onclick="location.href='/'"> 
-            Log out
-        </button>
+        <form action="/logout" method="POST">
+            <button type="submit" class="btn btn-logout">Log out</button>
+        </form>
+        
     </div>
 </body>
 </html>
