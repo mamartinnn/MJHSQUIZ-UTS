@@ -38,25 +38,39 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .btn-start {
+        .btn-biologi {
             background-color: #8a2be2;
             color: white;
         }
-        .btn-start:hover {
+        .btn-biologi:hover {
             background-color: #7b1fa2;
         }
-        .btn-editquiz {
+        .btn-inggris {
             background-color: #8a2be2;
             color: white;
         }
-        .btn-editquiz:hover {
+        .btn-inggris:hover {
             background-color: #7b1fa2;
         }
-        .btn-logout {
+        .btn-pengetahuan-umum {
             background-color: #8a2be2;
             color: white;
         }
-        .btn-logout:hover {
+        .btn-pengetahuan-umum:hover {
+            background-color: #7b1fa2;
+        }
+        .btn-indonesia {
+            background-color: #8a2be2;
+            color: white;
+        }
+        .btn-indonesia:hover {
+            background-color: #7b1fa2;
+        }
+        .btn-back {
+            background-color: #d4cddb;
+            color: rgb(24, 2, 2);
+        }
+        .btn-back:hover {
             background-color: #7b1fa2;
         }
     </style>
@@ -65,17 +79,25 @@
     <div class="container">
         <h1>MJHSQUIZZ</h1>
         
-        <button class="btn btn-start" onclick="location.href='/start-quiz'">
-            Start Quiz
+        <button class="btn btn-biologi" onclick="location.href='/biologi'">
+            Biologi
         </button>
         
-        <button class="btn btn-editquiz" onclick="location.href='/edit-quiz'">
-            Edit Quiz
+        <button class="btn btn-inggris" onclick="location.href='/inggris'">
+            Inggris
         </button>
 
-        <form action="/logout" method="POST">
-            <button type="submit" class="btn btn-logout">Log out</button>
-        </form>
+        <button class="btn btn-pengetahuan-umum" onclick="location.href='/pengetahuan-umum'">
+            Pengetahuan Umum
+        </button>
+
+        <button class="btn btn-indonesia" onclick="location.href='/indonesia'">
+            Indonesia
+        </button>
+
+        <button class="btn btn-back" onclick="location.href='/menu'">
+            back
+        </button>
         
     </div>
 </body>

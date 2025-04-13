@@ -14,5 +14,11 @@ router.get("/menu", (req, res) => {
    res.render("menu")
 });
 
+router.get("/start-quiz", (req, res) => {
+   res.render("startquiz")
+})
 
+router.get("/edit-quiz", (req, res) => {
+   res.render("editquiz")
+})
 module.exports = router;
