@@ -69,12 +69,9 @@
             Start Quiz
         </button>
         
-        <!-- <button class="btn btn-editquiz" onclick="location.href='/edit-quiz'">
+        <button class="btn btn-editquiz" onclick="location.href='/edit-quiz'">
             Edit Quiz
-        </button> -->
-        <% if (locals.user && locals.user.username === "admin") { %>
-            <button><a href="/edit-quiz">Edit Quiz</a></button>
-          <% } %>
+        </button>
 
         <form action="/logout" method="POST">
             <button type="submit" class="btn btn-logout">Log out</button>

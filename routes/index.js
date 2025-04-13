@@ -1,6 +1,6 @@
 const express = require("express");  
 const router = express.Router();
-const { authenticateUser, storeReturnTo } = require("../middleware");
+const { authenticateUser, storeReturnTo, isAdmin } = require("../middleware");
 
 const AuthController = require("../controllers/AuthController");
 router.get("/", AuthController.getLogin);
@@ -9,16 +9,17 @@ router.get("/signup", AuthController.getSignUp);
 router.post("/signup", AuthController.postSignUp);
 router.post("/logout", authenticateUser, AuthController.logout);
 
-
-router.get("/menu", (req, res) => {
-   res.render("menu")
+router.get("/menu", authenticateUser, (req, res) => {
+  res.render("menu");
 });
 
-router.get("/start-quiz", (req, res) => {
-   res.render("startquiz")
-})
+router.get("/start-quiz", authenticateUser, (req, res) => {
+  res.render("startquiz");
+});
 
-router.get("/edit-quiz", (req, res) => {
-   res.render("editquiz")
-})
+// Protect the edit-quiz route with isAdmin middleware
+router.get("/edit-quiz", authenticateUser, isAdmin, (req, res) => {
+  res.render("editquiz");
+});
+
 module.exports = router;

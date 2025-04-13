@@ -98,11 +98,12 @@ const AuthController = {
       return res.redirect(302, "/");
     }
     req.session.user_id = foundUser._id;
+    res.locals.user = foundUser;
     req.flash("success", `Welcome ${foundUser.username}!`);
     const redirectUrl = res.locals.returnTo || "/menu";
     res.redirect(302, redirectUrl);
   },
-
+  
   logout: (req, res) => {
     req.session.user_id = null;
     req.flash("success", "Successfully logged out");
