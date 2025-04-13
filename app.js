@@ -4,9 +4,17 @@ const methodOverride = require("method-override");
 const session = require("express-session"); 
 const flash = require("connect-flash");     
 const indexRouter = require("./routes/index");
+const mongoose = require("mongoose");
 
 require("dotenv").config(); 
 
+const main = async () => {
+  await mongoose.connect('mongodb://localhost:27017/Login-tut')
+};
+
+main()
+.then(() => console.log("Connected to DB"))
+.catch((err) => console.log("err"));
 
 app.use(express.urlencoded({ extended: true })); 
 app.use(express.json());
