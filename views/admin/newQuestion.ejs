@@ -1,0 +1,10 @@
+<h1>Add New Question</h1>
+<form action="/admin/quiz/<%= quizId %>/questions" method="POST">
+  <label for="question">Question:</label>
+  <textarea name="question" required></textarea>
+  <label for="answers">Answers (comma-separated):</label>
+  <input type="text" name="answers" required>
+  <label for="correct">Correct Answer (0-3):</label>
+  <input type="number" name="correct" min="0" max="3" required>
+  <button type="submit">Add Question</button>
+</form>

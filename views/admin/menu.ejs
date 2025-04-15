@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Admin Menu</h1>
+<a href="/admin/quiz/new">Create New Quiz</a>
+<ul>
+  <% subjects.forEach((subject) => { %>
+    <li>
+      <h2><%= subject.name %></h2>
+      <a href="/admin/quiz/<%= subject._id %>/edit">Edit Quiz</a>
+      <form action="/admin/quiz/<%= subject._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+    
+</body>
+</html>

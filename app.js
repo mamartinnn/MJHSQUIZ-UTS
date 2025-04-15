@@ -6,9 +6,11 @@
   const indexRouter = require("./routes/index");
   const mongoose = require("mongoose");
   const User = require("./db/models/user"); 
+  app.use(methodOverride("_method"));
   const main = async () => {
     await mongoose.connect('mongodb://localhost:27017/Login-tut')
   };
+  
 
   main()
   .then(() => console.log("Connected to DB"))
