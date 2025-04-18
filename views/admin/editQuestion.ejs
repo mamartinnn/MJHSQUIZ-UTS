@@ -1,0 +1,43 @@
+<h1>Edit Question</h1>
+<form action="/admin/question/<%= question._id %>/update" method="POST">
+  <div>
+    <label for="question">Question:</label>
+    <textarea name="question" id="question" required><%= question.question %></textarea>
+  </div>
+
+  <% question.answers.forEach((answer, index) => { %>
+  <div class="answer-group">
+    <label for="answer<%= index + 1 %>">Answer <%= index + 1 %>:</label>
+    <input 
+      type="text" 
+      id="answer<%= index + 1 %>" 
+      name="answers[]" 
+      value="<%= answer %>" 
+      required
+    >
+  </div>
+  <% }); %>
+
+  <div>
+    <label for="correct">Correct Answer:</label>
+    <select name="correct" id="correct" required>
+      <% [0, 1, 2, 3].forEach((num) => { %>
+        <option 
+          value="<%= num %>"
+          <%= question.correct === num ? 'selected' : '' %>
+        >
+          Answer <%= num + 1 %>
+        </option>
+      <% }); %>
+    </select>
+  </div>
+
+  <button type="submit">Update Question</button>
+
+  <% if (locals.success && success.length > 0) { %>
+    <div style="color: green;"><%= success %></div>
+  <% } %>
+  <% if (locals.error && error.length > 0) { %>
+    <div style="color: red;"><%= error %></div>
+  <% } %>
+</form>

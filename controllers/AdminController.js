@@ -78,18 +78,51 @@ const AdminController = {
 
   getEditQuestionForm: async (req, res) => {
     const { questionId } = req.params;
-    const question = await Question.findById(questionId);
-    res.render("admin/editQuestion", { question });
+  
+    try {
+      // Find the subject that contains the question
+      const subject = await Subject.findOne({ "questions._id": questionId });
+      if (!subject) {
+        req.flash("error", "Question not found!");
+        return res.redirect("/admin/menu");
+      }
+  
+      // Find the specific question in the subject's questions array
+      const question = subject.questions.id(questionId);
+      if (!question) {
+        req.flash("error", "Question not found!");
+        return res.redirect("/admin/menu");
+      }
+  
+      res.render("admin/editQuestion", { question });
+    } catch (err) {
+      console.error(err);
+      req.flash("error", "An error occurred while loading the question.");
+      res.redirect("/admin/menu");
+    }
   },
 
   updateQuestion: async (req, res) => {
     const { questionId } = req.params;
     const { question, answers, correct } = req.body;
+  
     try {
-      await Question.findByIdAndUpdate(questionId, { question, answers, correct });
+      // Update the specific question in the questions array
+      await Subject.findOneAndUpdate(
+        { "questions._id": questionId },
+        {
+          $set: {
+            "questions.$.question": question,
+            "questions.$.answers": answers,
+            "questions.$.correct": correct,
+          },
+        }
+      );
+  
       req.flash("success", "Question updated successfully!");
       res.redirect("/admin/menu");
     } catch (err) {
+      console.error(err);
       req.flash("error", "Failed to update question.");
       res.redirect("/admin/menu");
     }
@@ -97,11 +130,20 @@ const AdminController = {
 
   deleteQuestion: async (req, res) => {
     const { questionId } = req.params;
+  
     try {
-      await Question.findByIdAndDelete(questionId);
+      // Remove the question from the questions array
+      await Subject.findOneAndUpdate(
+        { "questions._id": questionId },
+        {
+          $pull: { questions: { _id: questionId } },
+        }
+      );
+  
       req.flash("success", "Question deleted successfully!");
       res.redirect("/admin/menu");
     } catch (err) {
+      console.error(err);
       req.flash("error", "Failed to delete question.");
       res.redirect("/admin/menu");
     }

@@ -17,3 +17,9 @@
     </li>
   <% }) %>
 </ul>
+<% if (locals.success && success.length > 0) { %>
+  <div style="color: green;"><%= success %></div>
+<% } %>
+<% if (locals.error && error.length > 0) { %>
+  <div style="color: red;"><%= error %></div>
+<% } %>
