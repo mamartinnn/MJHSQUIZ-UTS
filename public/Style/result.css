@@ -1,0 +1,90 @@
+/* Result Page Styles */
+body {
+    background-color: #f5f6fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #4b6cb7, #182848);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+a {
+    display: inline-block;
+    width: 250px;
+    padding: 1rem 2rem;
+    margin: 0.75rem;
+    background-color: #4b6cb7;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+a:hover {
+    background-color: #3a5594;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Notification Styles */
+div[style*="color: green"],
+div[style*="color: red"] {
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 8px;
+    font-weight: 500;
+    width: 100%;
+    max-width: 500px;
+}
+
+div[style*="color: green"] {
+    background-color: #e6ffe6;
+    border: 1px solid #99ff99;
+}
+
+div[style*="color: red"] {
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    a {
+        width: 100%;
+        max-width: 300px;
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    a {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}

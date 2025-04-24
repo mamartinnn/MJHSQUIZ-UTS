@@ -1,5 +1,4 @@
 <h1>Edit Quiz: <%= quiz.name %></h1>
-<h1>Edit Quiz: <%= quiz.name %></h1>
 <form action="/admin/quiz/<%= quiz._id %>?_method=PUT" method="POST">
   <label for="name">Quiz Name:</label>
   <input type="text" name="name" value="<%= quiz.name %>" required>
@@ -22,6 +21,9 @@
     </li>
   <% }) %>
 </ul>
+<div>
+  <a href="/admin/menu"><button>Back</button></a>
+</div>
 <% if (locals.success && success.length > 0) { %>
   <div style="color: green;"><%= success %></div>
 <% } %>
