@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    
+</head>
+<body>
+
+    
+    <div class="container mt-5">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Error!</h4>
+            <p><%= message %></p>
+            <hr>
+            <a href="/" class="btn btn-primary">Return Home</a>
+        </div>
+    </div>
+    <% if (locals.success && success.length > 0) { %>
+        <div style="color: green;"><%= success %></div>
+    <% } %>
+    <% if (locals.error && error.length > 0) { %>
+        <div style="color: red;"><%= error %></div>
+    <% } %>
+    
+</body>
+</html>

@@ -99,7 +99,10 @@ const AuthController = {
     }
     req.session.user_id = foundUser._id;
     res.locals.user = foundUser;
-    req.flash("success", `Welcome ${foundUser.username}!`);
+    req.flash("success", Welcome ${foundUser.username}!);
+    if (foundUser.username === 'admin') {
+      return res.redirect('/admin/menu');
+    }
     const redirectUrl = res.locals.returnTo || "/menu";
     res.redirect(302, redirectUrl);
   },

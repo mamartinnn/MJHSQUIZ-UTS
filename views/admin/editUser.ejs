@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit User Password</title>
+</head>
+<body>
+  <h1>Edit Password for <%= user.username %></h1>
+
+  <form action="/admin/users/<%= user._id %>/update-password" method="POST">
+    <label for="password">New Password:</label>
+    <input type="password" name="password" required />
+    <button type="submit">Update Password</button>
+  </form>
+
+  <a href="/admin/users">Back to User List</a>
+</body>
+</html>

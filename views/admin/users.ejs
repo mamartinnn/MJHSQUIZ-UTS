@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage Users</title>
+</head>
+<body>
+  <h1>User Management</h1>
+
+  <!-- Search Form -->
+  <form action="/admin/users" method="GET">
+    <input 
+      type="text" 
+      name="search" 
+      placeholder="Search by username"
+      value="<%= typeof search !== 'undefined' ? search : '' %>">
+    <button type="submit">Search</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.username %></td>
+          <td>
+            <td>
+                <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST" style="display:inline;">
+                  <button type="submit">Delete</button>
+                </form>
+                <a href="/admin/users/<%= user._id %>/edit">Edit Password</a>
+              </td>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <a href="/admin/menu">Back to Admin Menu</a>
+</body>
+</html>

@@ -1,5 +1,6 @@
 const Subject = require("../db/models/subject");
-const Question = require("../db/models/question");
+const User = require("../db/models/user");
+const bcrypt = require("bcrypt");
 
 const AdminController = {
   // Admin Menu
@@ -69,31 +70,28 @@ const AdminController = {
       const newQuestion = { question, answers, correct };
       await Subject.findByIdAndUpdate(quizId, { $push: { questions: newQuestion } });
       req.flash("success", "Question added successfully!");
-      res.redirect(`/admin/quiz/${quizId}/edit`);
+      res.redirect(/admin/quiz/${quizId}/edit);
     } catch (err) {
       req.flash("error", "Failed to add question.");
-      res.redirect(`/admin/quiz/${quizId}/edit`);
+      res.redirect(/admin/quiz/${quizId}/edit);
     }
   },
 
   getEditQuestionForm: async (req, res) => {
     const { questionId } = req.params;
-  
     try {
-      // Find the subject that contains the question
       const subject = await Subject.findOne({ "questions._id": questionId });
       if (!subject) {
         req.flash("error", "Question not found!");
         return res.redirect("/admin/menu");
       }
-  
-      // Find the specific question in the subject's questions array
+
       const question = subject.questions.id(questionId);
       if (!question) {
         req.flash("error", "Question not found!");
         return res.redirect("/admin/menu");
       }
-  
+
       res.render("admin/editQuestion", { question });
     } catch (err) {
       console.error(err);
@@ -105,9 +103,8 @@ const AdminController = {
   updateQuestion: async (req, res) => {
     const { questionId } = req.params;
     const { question, answers, correct } = req.body;
-  
+
     try {
-      // Update the specific question in the questions array
       await Subject.findOneAndUpdate(
         { "questions._id": questionId },
         {
@@ -118,7 +115,7 @@ const AdminController = {
           },
         }
       );
-  
+
       req.flash("success", "Question updated successfully!");
       res.redirect("/admin/menu");
     } catch (err) {
@@ -130,22 +127,77 @@ const AdminController = {
 
   deleteQuestion: async (req, res) => {
     const { questionId } = req.params;
-  
     try {
-      // Remove the question from the questions array
       await Subject.findOneAndUpdate(
         { "questions._id": questionId },
-        {
-          $pull: { questions: { _id: questionId } },
-        }
+        { $pull: { questions: { _id: questionId } } }
       );
-  
+
       req.flash("success", "Question deleted successfully!");
       res.redirect("/admin/menu");
     } catch (err) {
       console.error(err);
       req.flash("error", "Failed to delete question.");
       res.redirect("/admin/menu");
+    }
+  },
+
+  // User CRUD with Search
+  getAllUsers: async (req, res) => {
+    const search = req.query.search || "";
+    try {
+      const query = search
+        ? { username: { $regex: search, $options: "i" } }
+        : {};
+
+      const users = await User.find(query);
+      res.render("admin/users", { users, search });
+    } catch (err) {
+      req.flash("error", "Failed to fetch users.");
+      res.redirect("/admin/menu");
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    const { userId } = req.params;
+    try {
+      await User.findByIdAndDelete(userId);
+      req.flash("success", "User deleted successfully!");
+      res.redirect("/admin/users");
+    } catch (err) {
+      req.flash("error", "Failed to delete user.");
+      res.redirect("/admin/users");
+    }
+  },
+
+  getEditUserForm: async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        req.flash("error", "User not found!");
+        return res.redirect("/admin/users");
+      }
+      res.render("admin/editUser", { user });
+    } catch (err) {
+      req.flash("error", "Error loading user.");
+      res.redirect("/admin/users");
+    }
+  },
+
+  updateUserPassword: async (req, res) => {
+    const { userId } = req.params;
+    const { password } = req.body;
+
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await User.findByIdAndUpdate(userId, { password: hashedPassword });
+      req.flash("success", "Password updated successfully!");
+      res.redirect("/admin/users");
+    } catch (err) {
+      console.error(err);
+      req.flash("error", "Failed to update password.");
+      res.redirect("/admin/users");
     }
   },
 };
