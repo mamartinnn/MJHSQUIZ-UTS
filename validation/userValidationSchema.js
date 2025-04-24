@@ -16,12 +16,4 @@ module.exports = {
         confirmPassword: Joi.ref('password'),
     }),
     
-  questionValidationSchema: Joi.object({
-    question: Joi.string().min(1).max(500).required(),
-    answers: Joi.array()
-      .items(Joi.string().min(1).max(100).required())
-      .length(4)
-      .required(),
-    correct: Joi.string().pattern(new RegExp("^[0-3]$")).required(),
-  }),
 };
