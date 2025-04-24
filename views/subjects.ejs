@@ -6,18 +6,33 @@
 <body>
     <h1>Choose a Subject</h1>
 
-    <form action="/subjects" method="GET">
-        <input type="text" name="search" placeholder="Search subjects..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
-        <button type="submit">Search</button>
-    </form>
+    <form method="get" action="/subjects" class="mb-4">
+        <input type="text" name="search" placeholder="Search..." value="<%= searchQuery %>">
+      
+        <select name="category">
+          <option value="">All Categories</option>
+          <% categories.forEach(cat => { %>
+            <option value="<%= cat %>" <%= selectedCategory === cat ? 'selected' : '' %>><%= cat %></option>
+          <% }) %>
+        </select>
+      
+        <button type="submit">Filter</button>
+      </form>
+      
 
-    <ul>
+      <ul>
         <% subjects.forEach(subject => { %>
-            <li>
-                <a href="/quiz/<%= subject._id %>"><%= subject.name %></a>
-            </li>
-        <% }); %>
-    </ul>
+          <li>
+            <h3><%= subject.name %></h3>
+            <% if(subject.description) { %>
+              <p><%= subject.description %></p>
+            <% } %>
+            <p>Category: <%= subject.category || "Uncategorized" %></p>
+            <a href="/quiz/<%= subject._id %>">Take Quiz</a>
+          </li>
+        <% }) %>
+      </ul>
+      
 
     <a href="/leaderboard">View Leaderboard</a>
 

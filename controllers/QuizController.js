@@ -5,17 +5,33 @@ const User = require('../db/models/user');
 const QuizController = {
   // Get all subjects (with optional search)
   getSubjects: async (req, res) => {
-    const searchQuery = req.query.search || "";
+    const { search, category } = req.query;
+  
+    // Construct a filter object
+    let filter = {
+      name: { $regex: search || "", $options: "i" }
+    };
+  
+    if (category) {
+      filter.category = category;
+    }
+  
     try {
-      const subjects = await Subject.find({
-        name: { $regex: searchQuery, $options: "i" }
+      const subjects = await Subject.find(filter);
+      const categories = await Subject.distinct("category"); // for dropdown list
+  
+      res.render('subjects', {
+        subjects,
+        searchQuery: search || "",
+        selectedCategory: category || "",
+        categories
       });
-      res.render('subjects', { subjects, searchQuery });
     } catch (err) {
       console.error("Error fetching subjects:", err);
       res.status(500).render('error', { message: 'Failed to load subjects' });
     }
   },
+  
 
   // Get quiz for a specific subject
   getQuiz: async (req, res) => {
@@ -62,12 +78,19 @@ const QuizController = {
       if (existingScore) {
         if (score > existingScore.score) {
           existingScore.score = score;
-          await user.save();
         }
       } else {
         user.scores.push({ subject: subject._id, score });
-        await user.save();
       }
+
+      // Push quiz attempt history
+      user.attempts.push({
+        subject: subject._id,
+        score,
+        date: new Date()
+      });
+
+      await user.save();
 
       res.render('result', {
         score,
@@ -113,6 +136,20 @@ const QuizController = {
     } catch (err) {
       console.error("Leaderboard Error:", err);
       res.status(500).render('error', { message: 'Failed to load leaderboard' });
+    }
+  },
+
+  // Display user quiz history
+  getHistory: async (req, res) => {
+    try {
+      const user = await User
+        .findById(req.user._id)
+        .populate("attempts.subject", "name");
+
+      res.render("history", { attempts: user.attempts });
+    } catch (err) {
+      console.error("Get History Error:", err);
+      res.status(500).render('error', { message: 'Failed to load history' });
     }
   }
 };

@@ -52,5 +52,6 @@ router.get("/subjects", authenticateUser, QuizController.getSubjects);
 router.get("/quiz/:subjectId", authenticateUser, QuizController.getQuiz);
 router.post("/submit-quiz/:subjectId", authenticateUser, QuizController.submitQuiz);
 router.get("/leaderboard", authenticateUser, QuizController.getLeaderboard);
+router.get("/history", authenticateUser, QuizController.getHistory);
 
 module.exports = router;

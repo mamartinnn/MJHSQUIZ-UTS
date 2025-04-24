@@ -15,14 +15,15 @@ const AdminController = {
   },
 
   postNewQuiz: async (req, res) => {
-    const { name } = req.body;
+    const { name , category } = req.body;
     try {
-      await Subject.create({ name, questions: [] });
+      await Subject.create({ name,category, questions: [] });
       req.flash("success", "Quiz created successfully!");
       res.redirect("/admin/menu");
     } catch (err) {
       req.flash("error", "Failed to create quiz.");
-      res.redirect("/admin/menu");
+      res.redirect("/admin/menu")
+      console.log(err);
     }
   },
 
@@ -34,9 +35,9 @@ const AdminController = {
 
   updateQuiz: async (req, res) => {
     const { quizId } = req.params;
-    const { name } = req.body;
+    const { name , category } = req.body;
     try {
-      await Subject.findByIdAndUpdate(quizId, { name });
+      await Subject.findByIdAndUpdate(quizId, { name , category});
       req.flash("success", "Quiz updated successfully!");
       res.redirect("/admin/menu");
     } catch (err) {
