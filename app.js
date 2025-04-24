@@ -1,4 +1,4 @@
-  const express = require('express'); 
+const express = require('express'); 
   const app = express(); 
   const methodOverride = require("method-override");
   const session = require("express-session"); 
@@ -37,6 +37,7 @@
     if (req.session.user_id) {
       const user = await User.findById(req.session.user_id);
       res.locals.user = user; // Make the user available in all views
+      req.user = user;
     } else {
       res.locals.user = null; // No user logged in
     }
