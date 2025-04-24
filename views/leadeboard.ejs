@@ -1,0 +1,29 @@
+<!-- views/leaderboard.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+</head>
+<body>
+    <h1>Leaderboard</h1>
+    <% subjects.forEach(subject => { %>
+        <h2><%= subject.name %></h2>
+        <ol>
+            <% leaderboard
+                .filter(entry => entry._id.subject.equals(subject._id))
+                .forEach(entry => { %>
+                <li>
+                    <%= entry.username %> - <%= entry.totalScore %> points
+                </li>
+            <% }); %>
+        </ol>
+    <% }); %>
+    <a href="/subjects">Back to Subjects</a>
+    <% if (locals.success && success.length > 0) { %>
+        <div style="color: green;"><%= success %></div>
+    <% } %>
+    <% if (locals.error && error.length > 0) { %>
+        <div style="color: red;"><%= error %></div>
+    <% } %>
+</body>
+</html>

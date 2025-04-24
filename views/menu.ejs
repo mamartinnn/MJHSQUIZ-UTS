@@ -65,21 +65,20 @@
     <div class="container">
         <h1>MJHSQUIZZ</h1>
         
-        <button class="btn btn-start" onclick="location.href='/start-quiz'">
+        <button class="btn btn-start" onclick="location.href='/subjects'">
             Start Quiz
         </button>
-        
-        <!-- <button class="btn btn-editquiz" onclick="location.href='/edit-quiz'">
-            Edit Quiz
-        </button> -->
-        <% if (locals.user && locals.user.username === "admin") { %>
-            <button><a href="/admin/menu">Edit Quiz</a></button>
-          <% } %>
 
         <form action="/logout" method="POST">
             <button type="submit" class="btn btn-logout">Log out</button>
         </form>
         
     </div>
+    <% if (locals.success && success.length > 0) { %>
+        <div style="color: green;"><%= success %></div>
+    <% } %>
+    <% if (locals.error && error.length > 0) { %>
+        <div style="color: red;"><%= error %></div>
+    <% } %>
 </body>
 </html>
