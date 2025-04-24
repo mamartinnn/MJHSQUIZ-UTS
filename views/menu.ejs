@@ -1,79 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="/Style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MJHSQUIZZ</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f5f5f5;
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 280px;
-        }
-        h1 {
-            margin-bottom: 1.8rem;
-            color: #333;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 0.6rem 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .btn-start {
-            background-color: #8a2be2;
-            color: white;
-        }
-        .btn-start:hover {
-            background-color: #7b1fa2;
-        }
-        .btn-editquiz {
-            background-color: #8a2be2;
-            color: white;
-        }
-        .btn-editquiz:hover {
-            background-color: #7b1fa2;
-        }
-        .btn-logout {
-            background-color: #8a2be2;
-            color: white;
-        }
-        .btn-logout:hover {
-            background-color: #7b1fa2;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>MJHSQUIZZ</h1>
-        
-        <button class="btn btn-start" onclick="location.href='/subjects'">
-            Start Quiz
-        </button>
+    <main class="container">
+        <div class="form">
+            <h1 class="text-center">MJHSQUIZZ</h1>
+            
+            <div class="d-flex flex-col mt-8">
+                <button class="btn btn-primary w-100 mb-3" onclick="location.href='/subjects'">
+                    Start Quiz
+                </button>
 
-        <form action="/logout" method="POST">
-            <button type="submit" class="btn btn-logout">Log out</button>
-        </form>
-        
-    </div>
+                <form action="/logout" method="POST" class="w-100">
+                    <button type="submit" class="btn btn-secondary w-100">Log out</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
     <% if (locals.success && success.length > 0) { %>
         <div style="color: green;"><%= success %></div>
     <% } %>

@@ -30,6 +30,9 @@
         </option>
       <% }); %>
     </select>
+    <button class="btn btn-back" onclick="location.href='/menu'">
+      back
+  </button>
   </div>
 
   <button type="submit">Update Question</button>
@@ -40,4 +43,6 @@
   <% if (locals.error && error.length > 0) { %>
     <div style="color: red;"><%= error %></div>
   <% } %>
+
+
 </form>

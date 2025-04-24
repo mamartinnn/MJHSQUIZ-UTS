@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <link rel="stylesheet" href="/Style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choose Subject</title>
 </head>
 <body>
-    <h1>Choose a Subject</h1>
+    <main class="container">
+        <div class="form">
+            <h1 class="text-center mb-4">Choose a Subject</h1>
 
-    <form action="/subjects" method="GET">
-        <input type="text" name="search" placeholder="Search subjects..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
-        <button type="submit">Search</button>
-    </form>
+            <form action="/subjects" method="GET" class="mb-4">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="form-control mb-2"
+                        placeholder="Search subjects..."
+                        value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                    >
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
 
-    <ul>
-        <% subjects.forEach(subject => { %>
-            <li>
-                <a href="/quiz/<%= subject._id %>"><%= subject.name %></a>
-            </li>
-        <% }); %>
-    </ul>
+            <div class="subjects-list">
+                <% subjects.forEach(subject => { %>
+                    <a href="/quiz/<%= subject._id %>" class="subject-card">
+                        <div class="subject-name"><%= subject.name %></div>
+                    </a>
+                <% }); %>
+            </div>
 
-    <a href="/leaderboard">View Leaderboard</a>
+            <div class="text-center mt-4">
+                <a href="/leaderboard" class="link">View Leaderboard</a>
+            </div>
+        </div>
+    </main>
 
     <% if (locals.success && success.length > 0) { %>
         <div style="color: green;"><%= success %></div>
