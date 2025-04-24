@@ -3,23 +3,25 @@ const Subject = require('../db/models/subject');
 const User = require('../db/models/user');
 
 const QuizController = {
-  // Get all subjects (with optional search)
+  // Menampilkan semua subject, dengan fitur pencarian dan filter kategori
   getSubjects: async (req, res) => {
     const { search, category } = req.query;
-  
-    // Construct a filter object
+
+    // Membuat filter berdasarkan pencarian dan kategori
     let filter = {
       name: { $regex: search || "", $options: "i" }
     };
-  
+
     if (category) {
       filter.category = category;
     }
-  
+
     try {
+      // Mengambil subject berdasarkan filter
       const subjects = await Subject.find(filter);
-      const categories = await Subject.distinct("category"); // for dropdown list
-  
+      // Mengambil semua kategori unik untuk dropdown
+      const categories = await Subject.distinct("category");
+
       res.render('subjects', {
         subjects,
         searchQuery: search || "",
@@ -27,42 +29,42 @@ const QuizController = {
         categories
       });
     } catch (err) {
-      console.error("Error fetching subjects:", err);
-      res.status(500).render('error', { message: 'Failed to load subjects' });
+      console.error("Gagal mengambil data subject:", err);
+      res.status(500).render('error', { message: 'Gagal memuat subject' });
     }
   },
-  
 
-  // Get quiz for a specific subject
+  // Menampilkan kuis berdasarkan subject tertentu
   getQuiz: async (req, res) => {
     try {
       const subject = await Subject.findById(req.params.subjectId);
       if (!subject) {
-        return res.status(404).render('error', { message: 'Subject not found' });
+        return res.status(404).render('error', { message: 'Subject tidak ditemukan' });
       }
       res.render('quiz', { subject });
     } catch (err) {
-      console.error("Error loading quiz:", err);
-      res.status(500).render('error', { message: 'Failed to load quiz' });
+      console.error("Gagal memuat kuis:", err);
+      res.status(500).render('error', { message: 'Gagal memuat kuis' });
     }
   },
 
-  // Handle quiz submission and score saving
+  // Menangani proses submit kuis dan menyimpan skor ke database
   submitQuiz: async (req, res) => {
     try {
       const subject = await Subject.findById(req.params.subjectId);
       if (!subject) {
-        return res.status(404).render('error', { message: 'Subject not found' });
+        return res.status(404).render('error', { message: 'Subject tidak ditemukan' });
       }
 
+      // Pastikan user sudah login
       if (!req.user) {
-        req.flash("error", "You must be logged in to submit a quiz!");
+        req.flash("error", "Anda harus login untuk mengerjakan kuis!");
         return res.redirect("/");
       }
 
       let score = 0;
 
-      // Check answers
+      // Memeriksa jawaban user satu per satu
       subject.questions.forEach((question, index) => {
         const userAnswer = parseInt(req.body[`question${index}`], 10);
         if (!isNaN(userAnswer) && userAnswer === question.correct) {
@@ -70,20 +72,25 @@ const QuizController = {
         }
       });
 
+      // Cari user berdasarkan ID
       const user = await User.findById(req.user._id);
+
+      // Cek apakah user sudah pernah mengerjakan kuis ini sebelumnya
       const existingScore = user.scores.find(
         entry => entry.subject.toString() === subject._id.toString()
       );
 
       if (existingScore) {
+        // Jika skor baru lebih tinggi, update skor
         if (score > existingScore.score) {
           existingScore.score = score;
         }
       } else {
+        // Jika belum pernah, tambahkan skor baru
         user.scores.push({ subject: subject._id, score });
       }
 
-      // Push quiz attempt history
+      // Simpan riwayat kuis
       user.attempts.push({
         subject: subject._id,
         score,
@@ -98,15 +105,17 @@ const QuizController = {
         subjectName: subject.name
       });
     } catch (err) {
-      console.error("Submit Quiz Error:", err);
-      res.status(500).render('error', { message: 'Failed to submit quiz' });
+      console.error("Error saat submit kuis:", err);
+      res.status(500).render('error', { message: 'Gagal submit kuis' });
     }
   },
 
-  // Display leaderboard (optionally filter by subject)
+  // Menampilkan leaderboard/top skor
   getLeaderboard: async (req, res) => {
     try {
       const subjectFilter = req.query.subject;
+
+      // Filter berdasarkan subject jika tersedia
       const matchStage = subjectFilter
         ? { $match: { "scores.subject": new mongoose.Types.ObjectId(subjectFilter) } }
         : { $match: {} };
@@ -134,12 +143,12 @@ const QuizController = {
         currentSubject: subjectFilter || null
       });
     } catch (err) {
-      console.error("Leaderboard Error:", err);
-      res.status(500).render('error', { message: 'Failed to load leaderboard' });
+      console.error("Error saat memuat leaderboard:", err);
+      res.status(500).render('error', { message: 'Gagal memuat leaderboard' });
     }
   },
 
-  // Display user quiz history
+  // Menampilkan riwayat kuis user
   getHistory: async (req, res) => {
     try {
       const user = await User
@@ -148,8 +157,8 @@ const QuizController = {
 
       res.render("history", { attempts: user.attempts });
     } catch (err) {
-      console.error("Get History Error:", err);
-      res.status(500).render('error', { message: 'Failed to load history' });
+      console.error("Error saat mengambil riwayat:", err);
+      res.status(500).render('error', { message: 'Gagal memuat riwayat' });
     }
   }
 };
