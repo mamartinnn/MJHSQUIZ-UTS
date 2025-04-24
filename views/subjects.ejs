@@ -10,32 +10,64 @@
 <body>
     <main class="container">
         <div class="form">
-            <h1 class="text-center mb-4">Choose a Subject</h1>
+            <h1 class="text-center text-gradient mb-4">Choose a Subject</h1>
 
-            <form action="/subjects" method="GET" class="mb-4">
-                <div class="search-container">
+            <form method="get" action="/subjects" class="mb-4">
+                <div class="d-flex flex-col gap-2">
                     <input 
                         type="text" 
                         name="search" 
-                        class="form-control mb-2"
+                        class="form-control"
                         placeholder="Search subjects..."
-                        value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                        value="<%= searchQuery %>"
                     >
-                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                    
+                    <select 
+                        name="category" 
+                        class="form-control"
+                    >
+                        <option value="">All Categories</option>
+                        <% categories.forEach(cat => { %>
+                            <option 
+                                value="<%= cat %>" 
+                                <%= selectedCategory === cat ? 'selected' : '' %>
+                            >
+                                <%= cat %>
+                            </option>
+                        <% }) %>
+                    </select>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
                 </div>
             </form>
 
             <div class="subjects-list">
                 <% subjects.forEach(subject => { %>
-                    <a href="/quiz/<%= subject._id %>" class="subject-card">
-                        <div class="subject-name"><%= subject.name %></div>
-                    </a>
-                <% }); %>
+                    <div class="subject-card mb-3">
+                        <h3 class="subject-name mb-2"><%= subject.name %></h3>
+                        
+                        <% if(subject.description) { %>
+                            <p class="form-text mb-2"><%= subject.description %></p>
+                        <% } %>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge">
+                                <%= subject.category || "Uncategorized" %>
+                            </span>
+                            <a href="/quiz/<%= subject._id %>" class="btn btn-primary">
+                                Take Quiz
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
             </div>
 
             <div class="text-center mt-4">
                 <a href="/leaderboard" class="link">View Leaderboard</a>
+                
             </div>
+
+            <div><a href="/menu" class="btn btn-secondary mt-2">Back to Menu</a></div>
         </div>
     </main>
 

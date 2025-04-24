@@ -31,6 +31,10 @@ const subjectSchema = new Schema(
   },
   { timestamps: true }
 );
+subjectSchema.add({
+  category: { type: String, required: true, default: "General" }
+});
+
 
 const Subject = model("Subject", subjectSchema);
 module.exports = Subject;

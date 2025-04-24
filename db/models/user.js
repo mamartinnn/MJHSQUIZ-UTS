@@ -1,6 +1,5 @@
-// user.js
-const { Schema, model } = require("mongoose");
 
+const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
   username: {
     type: String,
@@ -17,7 +16,14 @@ const userSchema = new Schema({
       ref: 'Subject'
     },
     score: Number
-  }]
+  }],
+  attempts: [{
+    subject: { type: Schema.Types.ObjectId, ref: "Subject" },
+    score:   Number,
+    takenAt: { type: Date, default: Date.now }
+  }],
+  
+  
 });
 
 const User = model("User", userSchema);
