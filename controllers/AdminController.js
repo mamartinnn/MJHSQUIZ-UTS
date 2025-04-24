@@ -70,10 +70,10 @@ const AdminController = {
       const newQuestion = { question, answers, correct };
       await Subject.findByIdAndUpdate(quizId, { $push: { questions: newQuestion } });
       req.flash("success", "Question added successfully!");
-      res.redirect(/admin/quiz/${quizId}/edit);
+      res.redirect(`/admin/quiz/${quizId}/edit`);
     } catch (err) {
       req.flash("error", "Failed to add question.");
-      res.redirect(/admin/quiz/${quizId}/edit);
+      res.redirect(`/admin/quiz/${quizId}/edit`);
     }
   },
 

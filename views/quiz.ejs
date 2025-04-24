@@ -1,1 +1,36 @@
-    
+    <!-- views/quiz.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= subject.name %> Quiz</title>
+</head>
+<body>
+    <h1><%= subject.name %> Quiz</h1>
+    <form action="/submit-quiz/<%= subject._id %>" method="POST">
+        <% subject.questions.forEach((question, qIndex) => { %>
+            <div>
+                <h3><%= question.question %></h3>
+                <% question.answers.forEach((answer, aIndex) => { %>
+                    <div>
+                        <input type="radio" 
+                               name="question<%= qIndex %>" 
+                               value="<%= Number(aIndex) %>"
+                               id="q<%= qIndex %>a<%= aIndex %>"
+                               required>
+                        <label for="q<%= qIndex %>a<%= aIndex %>">
+                            <%= answer %>
+                        </label>
+                    </div>
+                <% }); %>
+            </div>
+        <% }); %>
+        <button type="submit">Submit Quiz</button>
+        <% if (locals.success && success.length > 0) { %>
+            <div style="color: green;"><%= success %></div>
+        <% } %>
+        <% if (locals.error && error.length > 0) { %>
+            <div style="color: red;"><%= error %></div>
+        <% } %>
+    </form>
+</body>
+</html>
